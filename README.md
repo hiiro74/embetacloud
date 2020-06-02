@@ -38,8 +38,53 @@ To start server, run:
 ```js
 npm start
 ```
-<h2>For Heroku:</h2>
-<i>Heroku is no longer supported.</i>
+# For Heroku:
+To deploy to heroku you need to use Heroku CLI and Docker Containers
+
+Clone the repository to a temporay folder
+```
+git clone https://github.com/hiiro74/embetacloud.git
+cd embetacloud/
+```
+
+Login thru Heroku CLI
+```
+heroku login
+```
+
+Log in to Container Registry
+```
+heroku container:login
+```
+
+Create heroku app (the example below will give you `https://embetacloud123.herokuapp.com`)
+```
+heroku create embetacloud123
+```
+
+Build the image and push to Container Registry
+```
+heroku container:push web
+```
+
+Then release the image to your app
+```
+heroku container:release web
+```
+
+Create the environment variables needed in heroku. 
+Go to the settings of your heroku app and create the variables below<br>
+You have to make a google developers project and set the following environment variables:
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- GOOGLE_REDIRECT_URL (it should be &lt;server address&gt;/oauthCallback by default)
+
+If you want to secure your app you can also add this environment variable to show login prompt before browsing the app<br>
+(default username is admin)
+- mypassword
+
+After setting these variables you can now view your app from its url (`https://embetacloud123.herokuapp.com`)
+
 
 <h2> For Docker: </h2>
 `docker run -d -p 3000:3000 -e GOOGLE_CLIENT_ID='***' 
