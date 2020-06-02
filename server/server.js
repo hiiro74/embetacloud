@@ -21,6 +21,7 @@ var Torrent_1 = require("./Torrent/Torrent");
 var Filter_1 = require("./Filter/Filter");
 var express = require("express");
 var url = require("url");
+var basicAuth = require('express-basic-auth');
 //endregion
 //region Constants
 var PORT = Number(process.env.PORT || 3000);
@@ -374,6 +375,12 @@ var sessionMiddleware = session({
     resave: false,
     saveUninitialized: true
 });
+if(process.env.mypassword) {
+    app.use(basicAuth({
+        users: { admin: process.env.mypassword },
+        challenge: true // <--- needed to actually show the login dialog!
+    }));
+}
 app.use(sessionMiddleware);
 //set up unblocker
 app.set("trust proxy", true);
